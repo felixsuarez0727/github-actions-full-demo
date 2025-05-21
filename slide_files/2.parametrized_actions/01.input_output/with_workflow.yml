@@ -1,0 +1,49 @@
+# File .github/workflows/notify-team.yml
+name: Notify Team
+
+on:
+  workflow_call:
+    inputs:
+      message:
+        required: true
+        type: string
+    outputs:
+      confirmation:
+        description: Confirmation message
+        value: ${{ jobs.notify.outputs.confirmation }}
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    outputs:
+      confirmation: ${{ steps.set-output.outputs.value }}
+    steps:
+      
+      - name: Set output
+        id: set-output
+        run: |
+          echo "Notification sent by email: ${{ inputs.message }}"
+          echo "confirmation=Message: ${{ inputs.message }} have been sended" >> $GITHUB_OUTPUT
+
+#--------------------------------------------------------------------------------------------------
+
+# File .github/workflows/notify-backend.yml
+name: Notify Backend
+
+on:
+  push:
+    branches: [main]
+    paths: ['backend/**']
+
+jobs:
+  notify:
+    uses: ./.github/workflows/notify-team.yml
+    with:
+      message: "Changes detected on backend"
+
+  print:
+    runs-on: ubuntu-latest
+    needs: notify
+    steps:
+      - run: echo "Confirmation ${{ needs.notify.outputs.confirmation }}"
+

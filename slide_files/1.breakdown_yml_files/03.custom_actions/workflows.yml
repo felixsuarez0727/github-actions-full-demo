@@ -1,0 +1,50 @@
+# File .github/actions/notify-team/action.yml
+name: Notify Team
+
+description: Custom action to notify the team
+
+runs:
+  using: "composite"
+  steps:
+    - run: echo "Changes detected. Notify team via email."
+
+
+#--------------------------------------------------------------------------------------------------
+
+# File .github/workflows/notify_backend.yml
+name: Notify Backend
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'backend/**'
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/notify-team
+
+
+
+#--------------------------------------------------------------------------------------------------
+
+# File .github/workflows/notify_frontend.yml
+name: Notify Frontend
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'frontend/**'
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/notify-team

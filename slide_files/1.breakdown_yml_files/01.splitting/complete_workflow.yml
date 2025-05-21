@@ -1,0 +1,24 @@
+# File .github/workflows/notify_teams.yml
+name: Notify Teams
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  notify-frontend:
+    if: ${{ contains(join(github.event.commits.*.modified, ' '), 'frontend/') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Notify frontend team
+        run: echo "Changes detected in frontend. Notify frontend team via email."
+
+  notify-backend:
+    if: ${{ contains(join(github.event.commits.*.modified, ' '), 'backend/') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Notify backend team
+        run: echo "Changes detected in backend. Notify backend team via email."

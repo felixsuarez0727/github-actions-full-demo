@@ -1,0 +1,38 @@
+# File .github/workflows/notify_frontend.yml
+name: Notify Frontend
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'frontend/**'
+
+jobs:
+  notify-frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Notify frontend team
+        run: echo "Changes detected in frontend. Notify frontend team via email."
+
+#--------------------------------------------------------------------------------------------------
+
+# File .github/workflows/notify_backend.yml
+
+name: Notify Backend
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'backend/**'
+
+jobs:
+  notify-backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Notify backend team
+        run: echo "Changes detected in backend. Notify backend team via email."

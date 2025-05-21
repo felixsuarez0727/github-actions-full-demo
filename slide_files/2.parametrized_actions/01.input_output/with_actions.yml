@@ -1,0 +1,46 @@
+# File .github/actions/notify-team/action.yml
+name: Notify Team
+description: Custom action to notify the team
+
+inputs:
+  message:
+    description: The message to notify the team
+    required: true
+
+outputs:
+  confirmation:
+    description: Confirmation message
+
+runs:
+  using: "composite"
+  steps:
+    - run: |
+        echo "Notification sent by email: ${{ inputs.message }}"
+        echo "confirmation=Message: ${{ inputs.message }} have been sended" >> $GITHUB_OUTPUT
+      shell: bash
+
+#--------------------------------------------------------------------------------------------------
+
+# File .github/workflows/notify_backend.yml
+name: Notify Backend
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'backend/**'
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - id: notify
+        uses: ./.github/actions/notify-team
+        with:
+          message: "Changes have been made on the backend"
+      
+      - run: echo "Result ${{ steps.notify.outputs.confirmation }}"
+        shell: bash
