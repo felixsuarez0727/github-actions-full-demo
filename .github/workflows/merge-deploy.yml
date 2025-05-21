@@ -18,7 +18,7 @@ jobs:
 
       - name: Check PR Labels
         id: check_labels
-        uses: ./.github/actions/check-labels-action
+        uses: felixsuarez0727/github-actions-demo-centralized-repository/.github/actions/common/check-labels-action@v2.0.0
         with:
           pr_number: ${{ github.event.pull_request.number }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -29,6 +29,6 @@ jobs:
     strategy:
       matrix:
         environment: ${{ fromJson(needs.deploy-if-merged.outputs.environments) }}
-    uses: ./.github/workflows/deploy-environment.yml
+    uses: felixsuarez0727/github-actions-demo-centralized-repository/.github/workflows/deploy-environment.yml@v2.0.0
     with:
       environment: ${{ matrix.environment }}
